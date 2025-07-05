@@ -35,28 +35,22 @@ extern uint32_t extra2;
 // MAIN
 //----------
 int main(void) {
-
   //multicore_launch_core1(core1_main);
   setpwm(1000,50);
-
   board_init();
-
   tusb_init();
-
   capture_init();
 
   while (1) {
     tud_task(); 
     cdc_task(); 
   }
-
   return 0;
 }
 
 //----------
 // USB CDC 
 //----------
-
 int32_t txcount = 0;
 uint8_t hexdigits[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 bool blockdone = false;
@@ -97,20 +91,12 @@ void write_block(){
     tud_cdc_n_write_flush(0);
 }
 
-/*
-void tud_cdc_tx_complete_cb(uint8_t itf){
-	if (!blockdone) write_block();
-}
-*/
-
 void tud_cdc_tx_complete_cb(uint8_t itf) {
 	(void) itf; // ignore itif parameter
 	if (!blockdone) write_block();
 }
 
-
-static void cdc_task(void)
-{
+static void cdc_task(void) {
     if ( tud_cdc_n_available(0) )
     {
         uint8_t buf[256];
@@ -181,37 +167,32 @@ static void cdc_task(void)
 //----------
 // PWM GEN
 //----------
-
 void setpwm(uint32_t freq, uint32_t dutycycle) {
-    // freq in Hz, dutycycle in %
-
-	uint32_t periods = 125000000 / freq;
-	// 8 bit clkdiv
-	uint32_t clkdiv = periods / 65000 + 1;
+    uint32_t periods = 125000000 / freq;
+    uint32_t clkdiv = periods / 65000 + 1;
     if (clkdiv > 255) clkdiv = 255;
-	uint32_t pwmdiv= periods / clkdiv;
-	if (pwmdiv > 65535) pwmdiv= 65535;
+    uint32_t pwmdiv= periods / clkdiv;
+    if (pwmdiv > 65535) pwmdiv= 65535;
     uint32_t  dc = pwmdiv * dutycycle / 100;	
-
-    // Tell GPIO 22 is allocated to the PWM
     gpio_set_function(22, GPIO_FUNC_PWM);
-
-    // Find out which PWM slice is connected to GPIO 22 
     uint slice_num = pwm_gpio_to_slice_num(22);
-
+	
     // Get some sensible defaults for the slice configuration. By default, the
     // counter is allowed to wrap over its maximum range (0 to 2**16-1)
     pwm_config config = pwm_get_default_config();
+    
     // Set divider, reduces counter clock to sysclock/this value
     pwm_config_set_clkdiv_int(&config, clkdiv);
+    
     // Load the configuration into our PWM slice, and set it running.
     pwm_init(slice_num, &config, true);
 
-
     // Set period of 4 cycles (0 to 3 inclusive)
     pwm_set_wrap(slice_num, (uint16_t) pwmdiv);
+
     // Set channel A output high for one cycle before dropping
     pwm_set_chan_level(slice_num, PWM_CHAN_A, (uint16_t) dc);
+    
     // Set the PWM running
     pwm_set_enabled(slice_num, true);
 }
