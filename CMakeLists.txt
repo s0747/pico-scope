@@ -13,7 +13,6 @@ family_initialize_project(${PROJECT} ${CMAKE_CURRENT_LIST_DIR})
 
 add_executable(${PROJECT})
 
-# Example source
 target_sources(${PROJECT} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/pico-scope.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_descriptors.c
