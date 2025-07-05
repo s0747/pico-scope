@@ -17,7 +17,7 @@ add_executable(${PROJECT})
 target_sources(${PROJECT} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/pico-scope.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_descriptors.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/dma_capture.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/adc.c
         )
 
 target_link_libraries(${PROJECT} PUBLIC
