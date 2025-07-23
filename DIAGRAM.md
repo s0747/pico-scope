@@ -1,13 +1,14 @@
 DIAGRAM.md
-Test  table:
 
+
+Test  table:
 | Functions                | Code         | Access | Data                     | Implemented |
 |--------------------------|--------------|--------|--------------------------|-------------|
-| manufacturer_access*     | 0x00         | r/w    | word                     | -           |
+| manufacturer_access*     | 0x00         | r/w    | word                     | ❌          |
 | remaining_capacity_alarm | 0x01         | r/w    | mAh or 10mWh             | ✅          |
 
 
-test diagram:
+Test diagram:
 
 ## Design Principles
 ### Generic Design Diagram
