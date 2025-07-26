@@ -1,1 +1,0 @@
-export PICO_SDK_PATH
